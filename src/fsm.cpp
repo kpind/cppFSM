@@ -12,6 +12,10 @@ FsmState* FiniteStateMachine::getCurrentState(void){
 
 
 void FiniteStateMachine::sendEvent(FsmEvent ev) {
-    currentState = currentState->handleEvent(ev);
+    FsmState* newState = currentState->handleEvent(ev);
+    if (newState != currentState) {
+        currentState->exit();
+    }
+    currentState = newState;
 }
 

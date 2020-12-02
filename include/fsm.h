@@ -45,13 +45,14 @@ class FsmState {
     public:
         FsmState();
         FsmState(std::string);
-        void entry(void) {};
-        void exit(void) {};
+        void setExitFunc(void(*ef)(void));
+        void exit(void);
         FsmState* handleEvent(FsmEvent);
         std::string getName();
         void addTransition(FsmTransition&);
 
     private:
+        void (*exitFunc)(void);
         std::string stateName;
         std::vector<FsmTransition> transitions = std::vector<FsmTransition>();
 };

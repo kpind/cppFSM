@@ -12,11 +12,17 @@
 #define EV_TERM     6
 
 
+void ExitFromUnlockedState(void) {
+    std::cout << "called unlocked.exit() --> ";
+}
+
+
 int main() {
 
     FsmState initState("Initial");
     FsmState lockedState("Locked");
     FsmState unlockedState("Unlocked");
+    unlockedState.setExitFunc(ExitFromUnlockedState);
     FsmState openState("Open");
     FsmState finalState("Final");
 

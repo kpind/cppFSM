@@ -2,15 +2,28 @@
 
 
 FsmState::FsmState() : stateName() {
+    exitFunc = nullptr;
 }
 
 
 FsmState::FsmState(std::string name) : stateName(name) {
+    exitFunc = nullptr;
 }
 
 
 void FsmState::addTransition(FsmTransition& tr) {
     transitions.push_back(tr);
+}
+
+void FsmState::setExitFunc(void(*ef)(void)) {
+    exitFunc = ef;
+}
+
+
+void FsmState::exit(void) {
+    if (nullptr != exitFunc) {
+        exitFunc();
+    }
 }
 
 
