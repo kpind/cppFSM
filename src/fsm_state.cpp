@@ -2,12 +2,14 @@
 
 
 FsmState::FsmState() : stateName() {
-    exitFunc = nullptr;
+    exitAction = nullptr;
+    entryAction = nullptr;
 }
 
 
 FsmState::FsmState(std::string name) : stateName(name) {
-    exitFunc = nullptr;
+    exitAction = nullptr;
+    entryAction = nullptr;
 }
 
 
@@ -15,14 +17,27 @@ void FsmState::addTransition(FsmTransition& tr) {
     transitions.push_back(tr);
 }
 
-void FsmState::setExitFunc(void(*ef)(void)) {
-    exitFunc = ef;
+
+void FsmState::setEntryAction(void(*action)(void)) {
+    entryAction = action;
+}
+
+
+void FsmState::setExitAction(void(*action)(void)) {
+    exitAction = action;
+}
+
+
+void FsmState::entry(void) {
+    if (nullptr != entryAction) {
+        entryAction();
+    }
 }
 
 
 void FsmState::exit(void) {
-    if (nullptr != exitFunc) {
-        exitFunc();
+    if (nullptr != exitAction) {
+        exitAction();
     }
 }
 

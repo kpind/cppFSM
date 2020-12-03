@@ -12,18 +12,47 @@
 #define EV_TERM     6
 
 
+void EnterLockedState(void) {
+    std::cout << "LED red ON --> ";
+}
+
+void ExitFromLockedState(void) {
+    std::cout << "LED red OFF --> ";
+}
+
+void EnterUnlockedState(void) {
+    std::cout << "LED yellow ON --> ";
+}
+
 void ExitFromUnlockedState(void) {
-    std::cout << "called unlocked.exit() --> ";
+    std::cout << "LED yellow OFF --> ";
+}
+
+void EnterStateOpen(void) {
+    std::cout << "LED green ON --> ";
+}
+
+void ExitFromStateOpen(void) {
+    std::cout << "LED green OFF --> ";
 }
 
 
 int main() {
 
     FsmState initState("Initial");
+
     FsmState lockedState("Locked");
+    lockedState.setEntryAction(EnterLockedState);
+    lockedState.setExitAction(ExitFromLockedState);
+
     FsmState unlockedState("Unlocked");
-    unlockedState.setExitFunc(ExitFromUnlockedState);
+    unlockedState.setExitAction(ExitFromUnlockedState);
+    unlockedState.setEntryAction(EnterUnlockedState);
+
     FsmState openState("Open");
+    openState.setEntryAction(EnterStateOpen);
+    openState.setExitAction(ExitFromStateOpen);
+
     FsmState finalState("Final");
 
     FsmEvent ev_init(EV_INIT, "init");
@@ -54,7 +83,7 @@ int main() {
 
     FiniteStateMachine fsm(&initState);
 
-    std::array<FsmEvent, 7> events { ev_init, ev_unlock, ev_open, ev_lock, ev_unlock, ev_init, ev_terminate};
+    std::array<FsmEvent, 8> events { ev_init, ev_unlock, ev_open, ev_lock, ev_unlock, ev_close, ev_init, ev_terminate };
 
     for (FsmEvent ev : events) {
         std::cout << ev.getName() << ": " << fsm.getCurrentState()->getName() << " --> ";
@@ -64,3 +93,4 @@ int main() {
 
     return 0;
 }
+

@@ -15,6 +15,7 @@ void FiniteStateMachine::sendEvent(FsmEvent ev) {
     FsmState* newState = currentState->handleEvent(ev);
     if (newState != currentState) {
         currentState->exit();
+        newState->entry();
     }
     currentState = newState;
 }
